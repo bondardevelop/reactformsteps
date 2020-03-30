@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import defaultAvatar from "../img/default-avatar.png";
 import Field from "./Field";
+import Stepspagination from "./Stepspagination";
 import Countries from "../data/countries";
 import Cities from "../data/cities";
 
@@ -131,19 +132,6 @@ export default class App extends React.Component {
     });
   };
 
-  // buttonPaginationNext = () => {
-  //   console.log(this.state.formNumber);
-  //   this.validate();
-  //   if (this.state.errors.validate) {
-  //     this.setState({
-  //       formNumber:
-  //         this.state.formNumber !== 4 ? this.state.formNumber + 1 : null
-  //     });
-  //   } else {
-  //     this.validate();
-  //   }
-  // };
-
   buttonPaginationPrev = () => {
     console.log(this.state.formNumber);
     this.setState({
@@ -187,42 +175,8 @@ export default class App extends React.Component {
     return (
       <div className="form-container card">
         <div className="card-body">
-          <div className="row">
-            <ul className="list-group list-group-horizontal ml-auto mr-auto">
-              <li
-                className="list-group-item"
-                onClick={() => {
-                  this.buttonPagination(1);
-                }}
-              >
-                1
-              </li>
-              <li
-                className="list-group-item"
-                onClick={() => {
-                  this.buttonPagination(2);
-                }}
-              >
-                2
-              </li>
-              <li
-                className="list-group-item"
-                onClick={() => {
-                  this.buttonPagination(3);
-                }}
-              >
-                3
-              </li>
-              <li
-                className="list-group-item"
-                onClick={() => {
-                  this.buttonPagination(4);
-                }}
-              >
-                4
-              </li>
-            </ul>
-          </div>
+          <Stepspagination currentForm={this.state.formNumber} />
+
           <form className="form">
             {this.state.formNumber === 1 ? (
               <div>
