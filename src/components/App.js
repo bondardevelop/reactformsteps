@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import defaultAvatar from "../img/default-avatar.png";
 import Field from "./Field";
 import Stepspagination from "./Stepspagination";
+import NextPrevButton from "./NextPrevButton";
 import Countries from "../data/countries";
 import Cities from "../data/cities";
 
@@ -10,7 +11,6 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: "basic",
       formNumber: 1,
       firstname: "",
       lastname: "",
@@ -40,10 +40,26 @@ export default class App extends React.Component {
 
   validate = () => {
     const errors = {};
-    console.log(this.state.country);
+
+    //REg exp
+    const regExpOnlyCharacters = /[0-9]/g;
+    const regExpEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
+    const regExpMobile = /^\+?3?8?(0[5-9][0-9]\d{7})$/;
+
+    const testFirstName = regExpOnlyCharacters.test(this.state.firstname);
+    const testLasttName = regExpOnlyCharacters.test(this.state.lastname);
+    const testEmail = this.state.email.match(regExpEmail);
+    const testMobile = this.state.mobile.match(regExpMobile);
+
     if (this.state.formNumber === 1) {
+      if (testFirstName) {
+        errors.firstname = "The name can't contains numbers";
+      }
       if (this.state.firstname.length < 5) {
         errors.firstname = "Must be 5 characters or more";
+      }
+      if (testLasttName) {
+        errors.lastname = "The name can't contains numbers";
       }
       if (this.state.lastname.length < 5) {
         errors.lastname = "Must be 5 characters or more";
@@ -59,10 +75,10 @@ export default class App extends React.Component {
       }
     }
     if (this.state.formNumber === 2) {
-      if (this.state.email.length < 5) {
+      if (!testEmail) {
         errors.email = "Invalid email address";
       }
-      if (this.state.mobile.length < 5) {
+      if (!testMobile) {
         errors.mobile = "Invalid mobile";
       }
       if (this.state.country.length < 1) {
@@ -162,7 +178,6 @@ export default class App extends React.Component {
     const reader = new FileReader();
     reader.onload = e => {
       console.log("result", e.target, e.target.result);
-
       this.setState({
         avatar: e.target.result
       });
@@ -275,7 +290,7 @@ export default class App extends React.Component {
                   id="mobile"
                   labelText="Mobile"
                   type="text"
-                  placeholder="Mobile"
+                  placeholder="+380960000000"
                   name="mobile"
                   value={this.state.mobile}
                   onChange={this.onChange}
@@ -354,21 +369,11 @@ export default class App extends React.Component {
               </div>
             ) : null}
           </form>
-          <div className="row">
-            {this.state.formNumber !== 1 ? (
-              <button
-                className="btn btn-light mr-4"
-                onClick={this.buttonPaginationPrev}
-              >
-                Prev
-              </button>
-            ) : null}
-            {this.state.formNumber !== 4 ? (
-              <button className="btn btn-light" onClick={this.validate}>
-                Next
-              </button>
-            ) : null}
-          </div>
+          <NextPrevButton
+            currentForm={this.state.formNumber}
+            validate={this.validate}
+            buttonPaginationPrev={this.buttonPaginationPrev}
+          />
         </div>
       </div>
     );
