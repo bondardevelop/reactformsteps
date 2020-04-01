@@ -38,7 +38,7 @@ export default class App extends React.Component {
     };
   }
 
-  validate = () => {
+  getErrors = () => {
     const errors = {};
 
     //REg exp
@@ -93,16 +93,17 @@ export default class App extends React.Component {
         errors.avatar = "Required";
       }
     }
+    return errors;
+  };
 
+  nextPage = () => {
+    const errors = this.getErrors();
     if (Object.keys(errors).length > 0) {
       this.setState({
         errors: errors
       });
     } else {
       this.setState({
-        errors: {
-          validate: true
-        },
         formNumber:
           this.state.formNumber !== 4 ? this.state.formNumber + 1 : null
       });
@@ -177,7 +178,6 @@ export default class App extends React.Component {
   onChangeAvatar = e => {
     const reader = new FileReader();
     reader.onload = e => {
-      console.log("result", e.target, e.target.result);
       this.setState({
         avatar: e.target.result
       });
@@ -186,7 +186,6 @@ export default class App extends React.Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <div className="form-container card">
         <div className="card-body">
@@ -229,7 +228,7 @@ export default class App extends React.Component {
                 <Field
                   id="repeatPassword"
                   labelText="Repeat password"
-                  type="repeatPassword"
+                  type="password"
                   placeholder="Repeat password"
                   name="repeatPassword"
                   value={this.state.repeatPassword}
@@ -371,7 +370,7 @@ export default class App extends React.Component {
           </form>
           <NextPrevButton
             currentForm={this.state.formNumber}
-            validate={this.validate}
+            nextPage={this.nextPage}
             buttonPaginationPrev={this.buttonPaginationPrev}
           />
         </div>
