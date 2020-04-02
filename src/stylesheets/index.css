@@ -76,3 +76,8 @@ body {
   display: block;
   color: rgba(0, 0, 0, 0);
 }
+
+.list-item-active {
+  background-color: #00ad5a;
+  color: #fff;
+}

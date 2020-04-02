@@ -12,17 +12,18 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       formNumber: 1,
-      firstname: "",
-      lastname: "",
-      password: "",
-      repeatPassword: "",
-      gender: "",
-      email: "",
-      mobile: "",
-      country: Countries[0].name,
-      countryId: 0,
-      city: "",
-      avatar: defaultAvatar,
+      values: {
+        firstname: "",
+        lastname: "",
+        password: "",
+        repeatPassword: "",
+        gender: "",
+        email: "",
+        mobile: "",
+        country: Countries[0].name,
+        city: "",
+        avatar: defaultAvatar
+      },
       errors: {
         firstname: false,
         lastname: false,
@@ -46,53 +47,58 @@ export default class App extends React.Component {
     const regExpEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
     const regExpMobile = /^\+?3?8?(0[5-9][0-9]\d{7})$/;
 
-    const testFirstName = regExpOnlyCharacters.test(this.state.firstname);
-    const testLasttName = regExpOnlyCharacters.test(this.state.lastname);
-    const testEmail = this.state.email.match(regExpEmail);
-    const testMobile = this.state.mobile.match(regExpMobile);
+    const testFirstName = regExpOnlyCharacters.test(
+      this.state.values.firstname
+    );
+    const testLasttName = regExpOnlyCharacters.test(this.state.values.lastname);
+    const testEmail = this.state.values.email.match(regExpEmail);
+    const testMobile = this.state.values.mobile.match(regExpMobile);
 
-    if (this.state.formNumber === 1) {
-      if (testFirstName) {
-        errors.firstname = "The name can't contains numbers";
-      }
-      if (this.state.firstname.length < 5) {
-        errors.firstname = "Must be 5 characters or more";
-      }
-      if (testLasttName) {
-        errors.lastname = "The name can't contains numbers";
-      }
-      if (this.state.lastname.length < 5) {
-        errors.lastname = "Must be 5 characters or more";
-      }
-      if (this.state.password.length < 6) {
-        errors.password = "Must be 6 characters or more";
-      }
-      if (this.state.password !== this.state.repeatPassword) {
-        errors.repeatPassword = "Must be equal password";
-      }
-      if (this.state.gender.length < 1) {
-        errors.gender = "Required";
-      }
+    switch (this.state.formNumber) {
+      case 1:
+        if (testFirstName) {
+          errors.firstname = "The name can't contains numbers";
+        }
+        if (this.state.values.firstname.length < 5) {
+          errors.firstname = "Must be 5 characters or more";
+        }
+        if (testLasttName) {
+          errors.lastname = "The name can't contains numbers";
+        }
+        if (this.state.values.lastname.length < 5) {
+          errors.lastname = "Must be 5 characters or more";
+        }
+        if (this.state.values.password.length < 6) {
+          errors.password = "Must be 6 characters or more";
+        }
+        if (this.state.values.password !== this.state.values.repeatPassword) {
+          errors.repeatPassword = "Must be equal password";
+        }
+        if (this.state.values.gender.length < 1) {
+          errors.gender = "Required";
+        }
+        break;
+      case 2:
+        if (!testEmail) {
+          errors.email = "Invalid email address";
+        }
+        if (!testMobile) {
+          errors.mobile = "Invalid mobile";
+        }
+        if (this.state.values.country.length < 1) {
+          errors.country = "Required";
+        }
+        if (this.state.values.city.length < 1) {
+          errors.city = "Required";
+        }
+        break;
+      case 3:
+        if (this.state.values.avatar.length < 1) {
+          errors.avatar = "Required";
+        }
+        break;
     }
-    if (this.state.formNumber === 2) {
-      if (!testEmail) {
-        errors.email = "Invalid email address";
-      }
-      if (!testMobile) {
-        errors.mobile = "Invalid mobile";
-      }
-      if (this.state.country.length < 1) {
-        errors.country = "Required";
-      }
-      if (this.state.city.length < 1) {
-        errors.city = "Required";
-      }
-    }
-    if (this.state.formNumber === 3) {
-      if (this.state.avatar.length < 1) {
-        errors.avatar = "Required";
-      }
-    }
+
     return errors;
   };
 
@@ -124,7 +130,7 @@ export default class App extends React.Component {
     let countryId;
 
     const currentCountry = countries.filter(item => {
-      if (item.name === this.state.country) {
+      if (item.name === this.state.values.country) {
         return item;
       }
     });
@@ -163,16 +169,13 @@ export default class App extends React.Component {
   };
 
   onChange = e => {
-    const thisName = e.target.name;
-    const thisValue = e.target.value;
-    this.setState(
-      (prevState, prevProps) => ({
-        [thisName]: thisValue
-      }),
-      () => {
-        console.log("this onChange");
+    const { name, value } = e.target;
+    this.setState({
+      values: {
+        ...this.state.values,
+        [name]: value
       }
-    );
+    });
   };
 
   onChangeAvatar = e => {
@@ -201,7 +204,7 @@ export default class App extends React.Component {
                   type="text"
                   placeholder="First name"
                   name="firstname"
-                  value={this.state.firstname}
+                  value={this.state.values.firstname}
                   onChange={this.onChange}
                   error={this.state.errors.firstname}
                 />
@@ -211,7 +214,7 @@ export default class App extends React.Component {
                   type="text"
                   placeholder="Last name"
                   name="lastname"
-                  value={this.state.lastname}
+                  value={this.state.values.lastname}
                   onChange={this.onChange}
                   error={this.state.errors.lastname}
                 />
@@ -221,7 +224,7 @@ export default class App extends React.Component {
                   type="password"
                   placeholder="Password"
                   name="password"
-                  value={this.state.password}
+                  value={this.state.values.password}
                   onChange={this.onChange}
                   error={this.state.errors.password}
                 />
@@ -231,7 +234,7 @@ export default class App extends React.Component {
                   type="password"
                   placeholder="Repeat password"
                   name="repeatPassword"
-                  value={this.state.repeatPassword}
+                  value={this.state.values.repeatPassword}
                   onChange={this.onChange}
                   error={this.state.errors.repeatPassword}
                 />
@@ -244,7 +247,7 @@ export default class App extends React.Component {
                       id="male"
                       name="gender"
                       value="male"
-                      checked={this.state.gender === "male"}
+                      checked={this.state.values.gender === "male"}
                       onChange={this.onChange}
                     />
                     <label className="form-check-label" htmlFor="male">
@@ -258,7 +261,7 @@ export default class App extends React.Component {
                       id="female"
                       name="gender"
                       value="female"
-                      checked={this.state.gender === "female"}
+                      checked={this.state.values.gender === "female"}
                       onChange={this.onChange}
                     />
                     <label className="form-check-label" htmlFor="female">
@@ -281,7 +284,7 @@ export default class App extends React.Component {
                   type="text"
                   placeholder="Email"
                   name="email"
-                  value={this.state.email}
+                  value={this.state.values.email}
                   onChange={this.onChange}
                   error={this.state.errors.email}
                 />
@@ -291,7 +294,7 @@ export default class App extends React.Component {
                   type="text"
                   placeholder="+380960000000"
                   name="mobile"
-                  value={this.state.mobile}
+                  value={this.state.values.mobile}
                   onChange={this.onChange}
                   error={this.state.errors.mobile}
                 />
@@ -301,7 +304,7 @@ export default class App extends React.Component {
                     className="form-control"
                     id="country"
                     name="country"
-                    value={this.state.country}
+                    value={this.state.values.country}
                     onChange={this.onChange}
                   >
                     {this.getOptionsCountries(Countries)}
@@ -318,7 +321,7 @@ export default class App extends React.Component {
                     className="form-control"
                     id="city"
                     name="city"
-                    value={this.state.city}
+                    value={this.state.values.city}
                     onChange={this.onChange}
                   >
                     <option>Select City</option>
@@ -335,7 +338,11 @@ export default class App extends React.Component {
               <div>
                 <h3 className="text-center">Avatar</h3>
                 <div className="avatar-container">
-                  <img alt="Avatar" title="Avatar" src={this.state.avatar} />
+                  <img
+                    alt="Avatar"
+                    title="Avatar"
+                    src={this.state.values.avatar}
+                  />
                 </div>
                 <div className="form-group">
                   <input
@@ -360,10 +367,10 @@ export default class App extends React.Component {
                     {this.state.firstname} , {this.state.lastname}
                   </h3>
                 </div>
-                <div>{this.state.email}</div>
-                <div>{this.state.mobile}</div>
+                <div>{this.state.values.email}</div>
+                <div>{this.state.values.mobile}</div>
                 <div>
-                  {this.state.country}, {this.state.city}
+                  {this.state.values.country}, {this.state.values.city}
                 </div>
               </div>
             ) : null}
