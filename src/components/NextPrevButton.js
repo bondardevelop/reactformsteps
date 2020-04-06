@@ -1,12 +1,16 @@
 import React from "react";
 const classNames = require("classnames");
 
-const NextPrevButton = props => {
+const NextPrevButton = (props) => {
   const { currentForm, nextPage, buttonPaginationPrev } = props;
   const Button = classNames({
     btn: true,
-    "btn btn-primary": true
+    "btn btn-primary": true,
   });
+
+  const resetForm = () => {
+    document.location.reload(true);
+  };
 
   return (
     <div className="container">
@@ -22,7 +26,11 @@ const NextPrevButton = props => {
           <button className={Button} onClick={nextPage}>
             Next
           </button>
-        ) : null}
+        ) : (
+          <button className={Button} onClick={resetForm}>
+            Reset
+          </button>
+        )}
       </div>
     </div>
   );

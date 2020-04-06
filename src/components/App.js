@@ -5,7 +5,7 @@ import Basic from "./Basic";
 import Contacts from "./Contacts";
 import Avatar from "./Avatar";
 import Finish from "./Finish";
-import Stepspagination from "./Stepspagination";
+import Stepsnavigation from "./Stepsnavigation";
 import NextPrevButton from "./NextPrevButton";
 import Countries from "../data/countries";
 
@@ -24,7 +24,7 @@ export default class App extends React.Component {
         mobile: "",
         country: Countries[0].name,
         city: "",
-        avatar: defaultAvatar
+        avatar: defaultAvatar,
       },
       errors: {
         firstnameError: false,
@@ -36,8 +36,8 @@ export default class App extends React.Component {
         mobileError: false,
         countryError: false,
         cityError: false,
-        avatarError: false
-      }
+        avatarError: false,
+      },
     };
   }
 
@@ -106,18 +106,18 @@ export default class App extends React.Component {
     const errors = this.getErrors();
     if (Object.keys(errors).length > 0) {
       this.setState({
-        errors: errors
+        errors: errors,
       });
     } else {
       this.setState({
         formNumber:
-          this.state.formNumber !== 4 ? this.state.formNumber + 1 : null
+          this.state.formNumber !== 4 ? this.state.formNumber + 1 : null,
       });
     }
   };
 
-  getOptionsCountries = countries => {
-    return countries.map(item => (
+  getOptionsCountries = (countries) => {
+    return countries.map((item) => (
       <option id={item.id} key={item.id} value={item.name}>
         {item.name}
       </option>
@@ -129,7 +129,7 @@ export default class App extends React.Component {
     let country;
     let countryId;
 
-    const currentCountry = countries.filter(item => {
+    const currentCountry = countries.filter((item) => {
       if (item.name === this.state.values.country) {
         return item;
       }
@@ -157,34 +157,35 @@ export default class App extends React.Component {
 
   buttonPaginationPrev = () => {
     this.setState({
-      formNumber: this.state.formNumber !== 1 ? this.state.formNumber - 1 : null
+      formNumber:
+        this.state.formNumber !== 1 ? this.state.formNumber - 1 : null,
     });
   };
 
-  buttonPagination = current => {
+  buttonPagination = (current) => {
     this.setState({
-      formNumber: current
+      formNumber: current,
     });
   };
 
-  onChangee = e => {
+  onChangee = (e) => {
     const { name, value } = e.target;
-    this.setState(state => ({
+    this.setState((state) => ({
       values: {
         ...state.values,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
-  onChangeAvatar = e => {
+  onChangeAvatar = (e) => {
     const reader = new FileReader();
-    reader.onload = e => {
-      this.setState(state => ({
+    reader.onload = (e) => {
+      this.setState((state) => ({
         values: {
           ...state.values,
-          avatar: e.target.result
-        }
+          avatar: e.target.result,
+        },
       }));
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -194,7 +195,7 @@ export default class App extends React.Component {
     return (
       <div className="form-container card">
         <div className="card-body">
-          <Stepspagination currentForm={this.state.formNumber} />
+          <Stepsnavigation currentForm={this.state.formNumber} />
 
           <form className="form">
             {this.state.formNumber === 1 ? (

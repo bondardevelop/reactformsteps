@@ -1,7 +1,7 @@
 import React from "react";
 const classNames = require("classnames");
 
-const Stepspagination = props => {
+const Stepsnavigation = (props) => {
   const { currentForm } = props;
   const formNumbers = [1, 2, 3, 4];
 
@@ -13,7 +13,7 @@ const Stepspagination = props => {
             const listItemClass = classNames({
               "list-item": true,
               "list-item-active": value == currentForm,
-              "list-item-notactive": value < currentForm
+              "list-item-notactive": value < currentForm,
             });
             return (
               <li key={index} className={listItemClass}>
@@ -27,4 +27,4 @@ const Stepspagination = props => {
   );
 };
 
-export default Stepspagination;
+export default Stepsnavigation;
