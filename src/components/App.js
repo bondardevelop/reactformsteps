@@ -7,13 +7,13 @@ import Avatar from "./Avatar";
 import Finish from "./Finish";
 import Stepsnavigation from "./Stepsnavigation";
 import NextPrevButton from "./NextPrevButton";
-import Countries from "../data/countries";
+import countries from "../data/countries";
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      formNumber: 1,
+      currentForm: 1,
       values: {
         firstname: "",
         lastname: "",
@@ -22,47 +22,28 @@ export default class App extends React.Component {
         gender: "",
         email: "",
         mobile: "",
-        country: Countries[0].name,
+        country: countries[0].name,
         city: "",
         avatar: defaultAvatar,
       },
-      errors: {
-        firstnameError: false,
-        lastnameError: false,
-        passwordError: false,
-        repeatPasswordError: false,
-        genderError: false,
-        emailError: false,
-        mobileError: false,
-        countryError: false,
-        cityError: false,
-        avatarError: false,
-      },
+      errors: {},
     };
   }
 
   getErrors = () => {
     const errors = {};
-    //REg exp
-    const regExpOnlyCharacters = /[0-9]/g;
-    const regExpEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
-    const regExpMobile = /^\+?3?8?(0[5-9][0-9]\d{7})$/;
-    const testFirstName = regExpOnlyCharacters.test(
-      this.state.values.firstname
-    );
-    const testLasttName = regExpOnlyCharacters.test(this.state.values.lastname);
-    const testEmail = this.state.values.email.match(regExpEmail);
-    const testMobile = this.state.values.mobile.match(regExpMobile);
 
-    switch (this.state.formNumber) {
+    switch (this.state.currentForm) {
       case 1:
-        if (testFirstName) {
+        const TestFirstName = /[0-9]/g.test(this.state.values.firstname);
+        if (TestFirstName) {
           errors.firstnameError = "The name can't contains numbers";
         }
         if (this.state.values.firstname.length < 5) {
           errors.firstnameError = "Must be 5 characters or more";
         }
-        if (testLasttName) {
+        const TestLasttName = /[0-9]/g.test(this.state.values.lastname);
+        if (TestLasttName) {
           errors.lastnameError = "The name can't contains numbers";
         }
         if (this.state.values.lastname.length < 5) {
@@ -79,10 +60,16 @@ export default class App extends React.Component {
         }
         break;
       case 2:
-        if (!testEmail) {
+        const TestEmail = this.state.values.email.match(
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi
+        );
+        if (!TestEmail) {
           errors.emailError = "Invalid email address";
         }
-        if (!testMobile) {
+        const TestMobile = this.state.values.mobile.match(
+          /^\+?3?8?(0[5-9][0-9]\d{7})$/
+        );
+        if (!TestMobile) {
           errors.mobileError = "Invalid mobile";
         }
         if (this.state.values.country.length < 1) {
@@ -100,20 +87,6 @@ export default class App extends React.Component {
     }
 
     return errors;
-  };
-
-  nextPage = () => {
-    const errors = this.getErrors();
-    if (Object.keys(errors).length > 0) {
-      this.setState({
-        errors: errors,
-      });
-    } else {
-      this.setState({
-        formNumber:
-          this.state.formNumber !== 4 ? this.state.formNumber + 1 : null,
-      });
-    }
   };
 
   getOptionsCountries = (countries) => {
@@ -155,20 +128,27 @@ export default class App extends React.Component {
     });
   };
 
-  buttonPaginationPrev = () => {
-    this.setState({
-      formNumber:
-        this.state.formNumber !== 1 ? this.state.formNumber - 1 : null,
-    });
+  prevStep = () => {
+    this.setState((state) => ({
+      currentForm: state.currentForm - 1,
+    }));
   };
 
-  buttonPagination = (current) => {
-    this.setState({
-      formNumber: current,
-    });
+  nextStep = () => {
+    const errors = this.getErrors();
+    if (Object.keys(errors).length > 0) {
+      this.setState({
+        errors: errors,
+      });
+    } else {
+      this.setState((state) => ({
+        errors: {},
+        currentForm: state.currentForm + 1,
+      }));
+    }
   };
 
-  onChangee = (e) => {
+  onChange = (e) => {
     const { name, value } = e.target;
     this.setState((state) => ({
       values: {
@@ -178,54 +158,37 @@ export default class App extends React.Component {
     }));
   };
 
-  onChangeAvatar = (e) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.setState((state) => ({
-        values: {
-          ...state.values,
-          avatar: e.target.result,
-        },
-      }));
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  };
-
   render() {
     return (
       <div className="form-container card">
         <div className="card-body">
-          <Stepsnavigation currentForm={this.state.formNumber} />
+          <Stepsnavigation currentForm={this.state.currentForm} />
 
           <form className="form">
-            {this.state.formNumber === 1 ? (
+            {this.state.currentForm === 1 ? (
               <Basic
                 values={this.state.values}
                 errors={this.state.errors}
-                onChange={this.onChangee}
+                onChange={this.onChange}
               />
-            ) : this.state.formNumber === 2 ? (
+            ) : this.state.currentForm === 2 ? (
               <Contacts
                 values={this.state.values}
                 errors={this.state.errors}
-                onChange={this.onChangee}
+                onChange={this.onChange}
                 getOptionsCountries={this.getOptionsCountries}
                 getOptionsCities={this.getOptionsCities}
               />
-            ) : this.state.formNumber === 3 ? (
-              <Avatar
-                values={this.state.values}
-                errors={this.state.errors}
-                onChangeAvatar={this.onChangeAvatar}
-              />
-            ) : this.state.formNumber === 4 ? (
+            ) : this.state.currentForm === 3 ? (
+              <Avatar onChange={this.onChange} state={this.state} />
+            ) : this.state.currentForm === 4 ? (
               <Finish values={this.state.values} />
             ) : null}
           </form>
           <NextPrevButton
-            currentForm={this.state.formNumber}
-            nextPage={this.nextPage}
-            buttonPaginationPrev={this.buttonPaginationPrev}
+            currentForm={this.state.currentForm}
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
           />
         </div>
       </div>

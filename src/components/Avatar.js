@@ -1,9 +1,21 @@
 import React from "react";
 
-const Avatar = props => {
-  const { avatar } = props.values;
-  const { avatarError } = props.errors;
-  const onChangeAvatar = props.onChangeAvatar;
+const Avatar = (props) => {
+  const { avatar } = props.state.values;
+  const { avatarError } = props.state.errors;
+  const { onChange } = props;
+  const onChangeAvatar = (e) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      onChange({
+        target: {
+          name: "avatar",
+          value: e.target.result,
+        },
+      });
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
   return (
     <div>
       <h3 className="text-center">Avatar</h3>

@@ -2,7 +2,7 @@ import React from "react";
 const classNames = require("classnames");
 
 const NextPrevButton = (props) => {
-  const { currentForm, nextPage, buttonPaginationPrev } = props;
+  const { currentForm, nextStep, prevStep } = props;
   const Button = classNames({
     btn: true,
     "btn btn-primary": true,
@@ -18,12 +18,12 @@ const NextPrevButton = (props) => {
         <button
           disabled={currentForm === 1 ? true : false}
           className={`mr-4 ${Button}`}
-          onClick={buttonPaginationPrev}
+          onClick={prevStep}
         >
           Prev
         </button>
         {currentForm !== 4 ? (
-          <button className={Button} onClick={nextPage}>
+          <button className={Button} onClick={nextStep}>
             Next
           </button>
         ) : (
