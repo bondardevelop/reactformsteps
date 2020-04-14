@@ -1,14 +1,33 @@
 import React from "react";
 import Field from "./Field";
-import Countries from "../data/countries";
-import Cities from "../data/cities";
+import countries from "../data/countries";
+import cities from "../data/cities";
 
-const Contacts = props => {
-  const { email, mobile, country, city } = props.values;
-  const { emailError, mobileError, countryError, cityError } = props.errors;
+const Contacts = (props) => {
+  const { errors, values } = props;
   const onChange = props.onChange;
-  const getOptionsCountries = props.getOptionsCountries;
-  const getOptionsCities = props.getOptionsCities;
+
+  const getOptionItems = (items) => {
+    return items.map((item) => (
+      <option id={item.id} key={item.id} value={item.id}>
+        {item.name}
+      </option>
+    ));
+  };
+
+  const getOptionsCities = (cities) => {
+    const fileredItems = Object.entries(cities).filter(
+      (item) => item[1].country === Number(values.country)
+    );
+
+    return getOptionItems(
+      fileredItems.map(([id, city]) => ({
+        id: id,
+        name: city.name,
+      }))
+    );
+  };
+
   return (
     <div>
       <h3 className="text-center">Contacts</h3>
@@ -18,9 +37,9 @@ const Contacts = props => {
         type="text"
         placeholder="Email"
         name="email"
-        value={email}
+        value={values.email}
         onChange={onChange}
-        error={emailError}
+        error={errors.email}
       />
       <Field
         id="mobile"
@@ -28,9 +47,9 @@ const Contacts = props => {
         type="text"
         placeholder="+380960000000"
         name="mobile"
-        value={mobile}
+        value={values.mobile}
         onChange={onChange}
-        error={mobileError}
+        error={errors.mobile}
       />
       <div className="form-group">
         <label htmlFor="country">Country</label>
@@ -38,14 +57,17 @@ const Contacts = props => {
           className="form-control"
           id="country"
           name="country"
-          value={country}
-          onChange={onChange}
+          value={values.country}
+          onChange={(e) => {
+            onChange(e);
+            getOptionsCities(cities);
+          }}
         >
-          {getOptionsCountries(Countries)}
+          {getOptionItems(countries)}
         </select>
-        {countryError ? (
-          <div className="invalid-feedback">{countryError}</div>
-        ) : null}
+        {errors.country && (
+          <div className="invalid-feedback">{errors.country}</div>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="city">City</label>
@@ -53,13 +75,13 @@ const Contacts = props => {
           className="form-control"
           id="city"
           name="city"
-          value={city}
+          value={values.city}
           onChange={onChange}
         >
           <option>Select City</option>
-          {getOptionsCities(Cities, Countries)}
+          {getOptionsCities(cities)}
         </select>
-        {cityError ? <div className="invalid-feedback">{cityError}</div> : null}
+        {errors.city && <div className="invalid-feedback">{errors.city}</div>}
       </div>
     </div>
   );

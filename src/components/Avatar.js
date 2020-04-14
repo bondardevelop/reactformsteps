@@ -1,9 +1,9 @@
 import React from "react";
 
 const Avatar = (props) => {
-  const { avatar } = props.state.values;
-  const { avatarError } = props.state.errors;
+  const { values, errors } = props;
   const { onChange } = props;
+
   const onChangeAvatar = (e) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -20,7 +20,7 @@ const Avatar = (props) => {
     <div>
       <h3 className="text-center">Avatar</h3>
       <div className="avatar-container">
-        <img alt="Avatar" title="Avatar" src={avatar} />
+        <img alt="Avatar" title="Avatar" src={values.avatar} />
       </div>
       <div className="form-group">
         <input
@@ -30,9 +30,9 @@ const Avatar = (props) => {
           name="avatar"
           onChange={onChangeAvatar}
         />
-        {avatarError ? (
-          <div className="invalid-feedback">{avatarError}</div>
-        ) : null}
+        {errors.avatar && (
+          <div className="invalid-feedback">{errors.avatar}</div>
+        )}
       </div>
     </div>
   );

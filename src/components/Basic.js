@@ -1,21 +1,8 @@
 import React from "react";
 import Field from "./Field";
 
-const Basic = props => {
-  const {
-    firstname,
-    lastname,
-    password,
-    repeatPassword,
-    gender
-  } = props.values;
-  const {
-    firstnameError,
-    lastnameError,
-    passwordError,
-    repeatPasswordError,
-    genderError
-  } = props.errors;
+const Basic = (props) => {
+  const { values, errors } = props;
   const onChange = props.onChange;
   return (
     <div>
@@ -26,9 +13,9 @@ const Basic = props => {
         type="text"
         placeholder="First name"
         name="firstname"
-        value={firstname}
+        value={values.firstname}
         onChange={onChange}
-        error={firstnameError}
+        error={errors.firstname}
       />
       <Field
         id="lastname"
@@ -36,9 +23,9 @@ const Basic = props => {
         type="text"
         placeholder="Last name"
         name="lastname"
-        value={lastname}
+        value={values.lastname}
         onChange={onChange}
-        error={lastnameError}
+        error={errors.lastname}
       />
       <Field
         id="password"
@@ -46,9 +33,9 @@ const Basic = props => {
         type="password"
         placeholder="Password"
         name="password"
-        value={password}
+        value={values.password}
         onChange={onChange}
-        error={passwordError}
+        error={errors.password}
       />
       <Field
         id="repeatPassword"
@@ -56,9 +43,9 @@ const Basic = props => {
         type="password"
         placeholder="Repeat password"
         name="repeatPassword"
-        value={repeatPassword}
+        value={values.repeatPassword}
         onChange={onChange}
-        error={repeatPasswordError}
+        error={errors.repeatPassword}
       />
       <fieldset className="form-group">
         <div>Gender</div>
@@ -69,7 +56,7 @@ const Basic = props => {
             id="male"
             name="gender"
             value="male"
-            checked={gender === "male"}
+            checked={values.gender === "male"}
             onChange={onChange}
           />
           <label className="form-check-label" htmlFor="male">
@@ -83,16 +70,16 @@ const Basic = props => {
             id="female"
             name="gender"
             value="female"
-            checked={gender === "female"}
+            checked={values.gender === "female"}
             onChange={onChange}
           />
           <label className="form-check-label" htmlFor="female">
             Female
           </label>
         </div>
-        {genderError ? (
-          <div className="invalid-feedback">{genderError}</div>
-        ) : null}
+        {errors.gender && (
+          <div className="invalid-feedback">{errors.gender}</div>
+        )}
       </fieldset>
     </div>
   );

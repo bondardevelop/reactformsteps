@@ -22,8 +22,8 @@ export default class App extends React.Component {
         gender: "",
         email: "",
         mobile: "",
-        country: countries[0].name,
-        city: "",
+        country: countries[0].id,
+        city: 1,
         avatar: defaultAvatar,
       },
       errors: {},
@@ -37,26 +37,26 @@ export default class App extends React.Component {
       case 1:
         const TestFirstName = /[0-9]/g.test(this.state.values.firstname);
         if (TestFirstName) {
-          errors.firstnameError = "The name can't contains numbers";
+          errors.firstname = "The name can't contains numbers";
         }
         if (this.state.values.firstname.length < 5) {
-          errors.firstnameError = "Must be 5 characters or more";
+          errors.firstname = "Must be 5 characters or more";
         }
         const TestLasttName = /[0-9]/g.test(this.state.values.lastname);
         if (TestLasttName) {
-          errors.lastnameError = "The name can't contains numbers";
+          errors.lastname = "The name can't contains numbers";
         }
         if (this.state.values.lastname.length < 5) {
-          errors.lastnameError = "Must be 5 characters or more";
+          errors.lastname = "Must be 5 characters or more";
         }
         if (this.state.values.password.length < 6) {
-          errors.passwordError = "Must be 6 characters or more";
+          errors.password = "Must be 6 characters or more";
         }
         if (this.state.values.password !== this.state.values.repeatPassword) {
-          errors.repeatPasswordError = "Must be equal password";
+          errors.repeatPasswor = "Must be equal password";
         }
         if (this.state.values.gender.length < 1) {
-          errors.genderError = "Required";
+          errors.gender = "Required";
         }
         break;
       case 2:
@@ -64,68 +64,30 @@ export default class App extends React.Component {
           /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi
         );
         if (!TestEmail) {
-          errors.emailError = "Invalid email address";
+          errors.email = "Invalid email address";
         }
         const TestMobile = this.state.values.mobile.match(
           /^\+?3?8?(0[5-9][0-9]\d{7})$/
         );
         if (!TestMobile) {
-          errors.mobileError = "Invalid mobile";
+          errors.mobile = "Invalid mobile";
         }
         if (this.state.values.country.length < 1) {
-          errors.countryError = "Required";
+          errors.country = "Required";
         }
         if (this.state.values.city.length < 1) {
-          errors.cityError = "Required";
+          errors.city = "Required";
         }
         break;
       case 3:
         if (this.state.values.avatar.length < 1) {
-          errors.avatarError = "Required";
+          errors.avatar = "Required";
         }
         break;
+      default:
     }
 
     return errors;
-  };
-
-  getOptionsCountries = (countries) => {
-    return countries.map((item) => (
-      <option id={item.id} key={item.id} value={item.name}>
-        {item.name}
-      </option>
-    ));
-  };
-
-  getOptionsCities = (cities, countries) => {
-    const citiesArr = [];
-    let country;
-    let countryId;
-
-    const currentCountry = countries.filter((item) => {
-      if (item.name === this.state.values.country) {
-        return item;
-      }
-    });
-
-    country = currentCountry[0];
-    if (country !== undefined) {
-      countryId = country.id;
-    }
-
-    for (let key in cities) {
-      citiesArr.push(cities[key]);
-    }
-
-    return citiesArr.map((item, index) => {
-      if (item.country === countryId) {
-        return (
-          <option id={index} key={index} value={item.name}>
-            {item.name}
-          </option>
-        );
-      }
-    });
   };
 
   prevStep = () => {
@@ -163,7 +125,6 @@ export default class App extends React.Component {
       <div className="form-container card">
         <div className="card-body">
           <Stepsnavigation currentForm={this.state.currentForm} />
-
           <form className="form">
             {this.state.currentForm === 1 ? (
               <Basic
@@ -171,17 +132,18 @@ export default class App extends React.Component {
                 errors={this.state.errors}
                 onChange={this.onChange}
               />
-            ) : this.state.currentForm === 2 ? (
+            ) : null}
+            {this.state.currentForm === 2 ? (
               <Contacts
                 values={this.state.values}
                 errors={this.state.errors}
                 onChange={this.onChange}
-                getOptionsCountries={this.getOptionsCountries}
-                getOptionsCities={this.getOptionsCities}
               />
-            ) : this.state.currentForm === 3 ? (
+            ) : null}
+            {this.state.currentForm === 3 ? (
               <Avatar onChange={this.onChange} state={this.state} />
-            ) : this.state.currentForm === 4 ? (
+            ) : null}
+            {this.state.currentForm === 4 ? (
               <Finish values={this.state.values} />
             ) : null}
           </form>
