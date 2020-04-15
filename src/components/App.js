@@ -1,12 +1,12 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import defaultAvatar from "../img/default-avatar.png";
+
 import Basic from "./Basic";
 import Contacts from "./Contacts";
 import Avatar from "./Avatar";
 import Finish from "./Finish";
 import Stepsnavigation from "./Stepsnavigation";
-import NextPrevButton from "./NextPrevButton";
+import Buttons from "./Buttons";
 import countries from "../data/countries";
 
 export default class App extends React.Component {
@@ -23,12 +23,18 @@ export default class App extends React.Component {
         email: "",
         mobile: "",
         country: countries[0].id,
-        city: 1,
-        avatar: defaultAvatar,
+        city: "",
+        country: "",
+        avatar: "",
       },
       errors: {},
     };
+    this.baseState = this.state;
   }
+
+  resetForm = () => {
+    this.setState(this.baseState);
+  };
 
   getErrors = () => {
     const errors = {};
@@ -141,16 +147,21 @@ export default class App extends React.Component {
               />
             ) : null}
             {this.state.currentForm === 3 ? (
-              <Avatar onChange={this.onChange} state={this.state} />
+              <Avatar
+                values={this.state.values}
+                errors={this.state.errors}
+                onChange={this.onChange}
+              />
             ) : null}
             {this.state.currentForm === 4 ? (
               <Finish values={this.state.values} />
             ) : null}
           </form>
-          <NextPrevButton
+          <Buttons
             currentForm={this.state.currentForm}
             nextStep={this.nextStep}
             prevStep={this.prevStep}
+            resetForm={this.resetForm}
           />
         </div>
       </div>

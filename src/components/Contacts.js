@@ -4,8 +4,7 @@ import countries from "../data/countries";
 import cities from "../data/cities";
 
 const Contacts = (props) => {
-  const { errors, values } = props;
-  const onChange = props.onChange;
+  const { errors, values, onChange } = props;
 
   const getOptionItems = (items) => {
     return items.map((item) => (
@@ -63,6 +62,7 @@ const Contacts = (props) => {
             getOptionsCities(cities);
           }}
         >
+          <option>Select Country</option>
           {getOptionItems(countries)}
         </select>
         {errors.country && (

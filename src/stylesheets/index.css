@@ -16,6 +16,7 @@ body {
 
 .avatar-container {
   width: 100%;
+  min-height: 200px;
   margin-bottom: 30px;
 }
 
@@ -24,6 +25,10 @@ body {
   margin: 0 auto;
   width: auto;
   max-height: 300px;
+}
+
+.avatar-user {
+  border-radius: 50%;
 }
 
 .list-item {
@@ -58,7 +63,7 @@ body {
   transform: translate(-50%, 0%);
 }
 
-.list-item-notactive:after {
+.complete:after {
   content: "✔";
   position: absolute;
   top: 50%;
@@ -67,17 +72,22 @@ body {
   color: #fff;
 }
 
-.list-item-notactive:before {
+.complete:before {
   border-top: 5px dotted #00ad5a;
 }
 
-.list-item-notactive {
+.complete {
   background-color: #00ad5a;
   display: block;
   color: rgba(0, 0, 0, 0);
 }
 
-.list-item-active {
+.active {
   background-color: #00ad5a;
   color: #fff;
+}
+
+.label {
+  font-weight: 600;
+  display: inline-block;
 }

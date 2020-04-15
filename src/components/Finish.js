@@ -25,15 +25,20 @@ const Finish = (props) => {
 
   return (
     <div>
-      <div className="avatar-container">
+      <div className="avatar-container avatar-user">
         <img alt="Avatar" title="Avatar" src={values.avatar} />
         <h3 className="mt-4 mb-4">
           {values.firstname} , {values.lastname}
         </h3>
       </div>
-      <div>Email: {values.email}</div>
-      <div>Phone: {values.mobile}</div>
+      <div>
+        <div className="label">Email: </div> {values.email}
+      </div>
+      <div>
+        <div className="label">Phone: </div> {values.mobile}
+      </div>
       <div className="mb-4">
+        <div className="label">Location: </div>
         {getCountry[0].name}, {getCitie[0].name}
       </div>
     </div>

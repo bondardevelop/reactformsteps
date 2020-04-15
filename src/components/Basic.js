@@ -2,8 +2,8 @@ import React from "react";
 import Field from "./Field";
 
 const Basic = (props) => {
-  const { values, errors } = props;
-  const onChange = props.onChange;
+  const { values, errors, onChange } = props;
+
   return (
     <div>
       <h3 className="text-center">Basic</h3>

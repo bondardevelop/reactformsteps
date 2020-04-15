@@ -12,12 +12,12 @@ const Stepsnavigation = (props) => {
           {formNumbers.map((value, index) => {
             const listItemClass = classNames({
               "list-item": true,
-              "list-item-active": value == currentForm,
-              "list-item-notactive": value < currentForm,
+              active: value == currentForm,
+              complete: value < currentForm,
             });
             return (
               <li key={index} className={listItemClass}>
-                {value >= currentForm ? value : null}
+                {value}
               </li>
             );
           })}
