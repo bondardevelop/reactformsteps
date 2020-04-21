@@ -1,26 +1,12 @@
 import React from "react";
-import countries from "../data/countries";
-import cities from "../data/cities";
+import countries from "../../data/countries";
+import cities from "../../data/cities";
 
 const Finish = (props) => {
   const { values } = props;
-
+  console.log(cities, cities[4]);
   const getCountry = countries.filter(
     (item) => item.id === Number(values.country)
-  );
-
-  const getCities = (cities) => {
-    const fileredItems = Object.entries(cities).filter(
-      (item) => item[1].country === Number(values.country)
-    );
-    return fileredItems.map(([id, city]) => ({
-      id: id,
-      name: city.name,
-    }));
-  };
-
-  const getCitie = getCities(cities).filter(
-    (item) => Number(item.id) === Number(values.city)
   );
 
   return (
@@ -39,7 +25,7 @@ const Finish = (props) => {
       </div>
       <div className="mb-4">
         <div className="label">Location: </div>
-        {getCountry[0].name}, {getCitie[0].name}
+        {getCountry[0].name}, {cities[values.city].name}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
-import Field from "./Field";
-import countries from "../data/countries";
-import cities from "../data/cities";
+import Field from "../Field";
+import countries from "../../data/countries";
+import cities from "../../data/cities";
 
 const Contacts = (props) => {
   const { errors, values, onChange } = props;

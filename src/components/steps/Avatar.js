@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultAvatar from "../img/default-avatar.png";
+import DefaultAvatar from "../../img/default-avatar.png";
 
 const Avatar = (props) => {
   const { values, errors, onChange } = props;

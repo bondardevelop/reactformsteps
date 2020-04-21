@@ -1,11 +1,10 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 
-import Basic from "./Basic";
-import Contacts from "./Contacts";
-import Avatar from "./Avatar";
-import Finish from "./Finish";
-import Stepsnavigation from "./Stepsnavigation";
+import Basic from "./steps/Basic";
+import Contacts from "./steps/Contacts";
+import Avatar from "./steps/Avatar";
+import Finish from "./steps/Finish";
+import StepsNavigation from "./Stepsnavigation";
 import Buttons from "./Buttons";
 import countries from "../data/countries";
 
@@ -130,32 +129,32 @@ export default class App extends React.Component {
     return (
       <div className="form-container card">
         <div className="card-body">
-          <Stepsnavigation currentForm={this.state.currentForm} />
+          <StepsNavigation currentForm={this.state.currentForm} />
           <form className="form">
-            {this.state.currentForm === 1 ? (
+            {this.state.currentForm === 1 && (
               <Basic
                 values={this.state.values}
                 errors={this.state.errors}
                 onChange={this.onChange}
               />
-            ) : null}
-            {this.state.currentForm === 2 ? (
+            )}
+            {this.state.currentForm === 2 && (
               <Contacts
                 values={this.state.values}
                 errors={this.state.errors}
                 onChange={this.onChange}
               />
-            ) : null}
-            {this.state.currentForm === 3 ? (
+            )}
+            {this.state.currentForm === 3 && (
               <Avatar
                 values={this.state.values}
                 errors={this.state.errors}
                 onChange={this.onChange}
               />
-            ) : null}
-            {this.state.currentForm === 4 ? (
+            )}
+            {this.state.currentForm === 4 && (
               <Finish values={this.state.values} />
-            ) : null}
+            )}
           </form>
           <Buttons
             currentForm={this.state.currentForm}
